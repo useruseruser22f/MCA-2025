@@ -42,7 +42,7 @@
   <script>
 document.addEventListener("DOMContentLoaded", () => {
     let tk = null;        // Verovio toolkit instance for display
-
+    let meiLocation = "https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei"; /*Update this value in quotes with your own file location*/
     let zoom = 70;
     let trInterval = 0;
 
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         // --- Load MEI Data and Render SVG ---
-        fetch("https://www.verovio.org/examples/downloads/Schubert_Lindenbaum.mei")
+        fetch(meiLocation)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -250,23 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 // --- Attach Event Listeners and Callbacks after data is loaded ---
                 loadAudioButton.addEventListener("click", loadAudioAndPlayHandler);
                 stopMIDIButton.addEventListener("click", stopMIDIHandler);
-
-                // Remove this event: handled by setInterval now
-                // player.addEventListener('timeupdate', ...);
-
-                // --- Print PDF Modal logic (unchanged) ---
-                printPDFButton.addEventListener('click', function() {
-                    paperSizeModal.style.display = 'flex';
-                });
-                cancelPdfButton.addEventListener('click', function() {
-                    paperSizeModal.style.display = 'none';
-                });
-                generatePdfButton.addEventListener('click', async function() {
-                    paperSizeModal.style.display = 'none';
-                    const selectedSizeElement = document.querySelector('input[name="paperSize"]:checked');
-                    const selectedPaperSize = selectedSizeElement ? selectedSizeElement.value : 'LETTER';
-                    await generatePDF(selectedPaperSize);
-                });
             });
     };
 });
