@@ -28,111 +28,20 @@
       fill: #ff0000; /* Highlight notes in red */
       stroke: #ff0000;
     }
-
-    /* --- New CSS for the Paper Size Modal --- */
-    #paperSizeModal {
-      display: none; /* Changed from 'flex' to 'none' */
-      position: fixed; /* Stay in place */
-      z-index: 1000; /* Sit on top */
-      left: 0;
-      top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center vertically */
-      /* display: flex; will be set by JS when needed */
-    }
-
-    #paperSizeModal > div {
-      background-color: #fefefe;
-      margin: auto; /* For browsers that don't support flex centering */
-      padding: 30px;
-      border: 1px solid #888;
-      width: 90%; /* Could be more specific */
-      max-width: 350px; /* Max width for larger screens */
-      border-radius: 8px;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-      text-align: center;
-    }
-
-    #paperSizeModal h2 {
-        margin-top: 0;
-        color: #333;
-    }
-
-    #paperSizeModal label {
-        margin-left: 5px;
-        font-size: 1.1em;
-    }
-
-    #paperSizeModal input[type="radio"] {
-        margin-bottom: 10px;
-    }
-
-    #paperSizeModal button {
-        padding: 10px 20px;
-        margin: 10px 5px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1em;
-    }
-
-    #paperSizeModal button#generatePdfButton {
-        background-color: #4CAF50; /* Green */
-        color: white;
-    }
-
-    #paperSizeModal button#generatePdfButton:hover {
-        background-color: #45a049;
-    }
-
-    #paperSizeModal button#cancelPdfButton {
-        background-color: #f44336; /* Red */
-        color: white;
-    }
-
-    #paperSizeModal button#cancelPdfButton:hover {
-        background-color: #da190b;
-    }
-
-    .currently-playing {
-      fill: #ff0000;
-      stroke: #ff0000;
-    }
   </style>
 </head>
 <body>
-  <h1>Hello Verovio!</h1>
+  <h1>Verovio sample</h1> <!-- Replace this text with a title for your piece -->
   <button id="loadAudio">Load Audio</button>
   <button id="stopMIDI">Stop</button>
-  <button id="printPDF">Print</button>
   <midi-player id="verovio-midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" controls="false" style="display: none;">
   </midi-player>
   <div id="notation"></div>
 
-  <div id="paperSizeModal">
-    <div>
-      <h2>Choose Paper Size</h2>
-      <input type="radio" id="paperLetter" name="paperSize" value="LETTER" checked>
-      <label for="paperLetter">Letter (8.5" x 11")</label><br><br>
-      <input type="radio" id="paperA4" name="paperSize" value="A4">
-      <label for="paperA4">A4 (210mm x 297mm)</label><br><br>
-      <input type="radio" id="paperA5" name="paperSize" value="A5">
-      <label for="paperA5">A5 (148mm x 210mm)</label><br><br>
-      <input type="radio" id="paperOctavo" name="paperSize" value="OCTAVO">
-      <label for="paperOctavo">Choral (Octavo ~6.75" x 10.5")</label><br><br>
-      <button id="generatePdfButton">Generate PDF</button>
-      <button id="cancelPdfButton">Cancel</button>
-    </div>
-  </div>
 
   <script>
 document.addEventListener("DOMContentLoaded", () => {
     let tk = null;        // Verovio toolkit instance for display
-    let tk_pdf = null;    // Verovio toolkit instance for PDF generation
 
     let zoom = 70;
     let trInterval = 0;
@@ -358,103 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const selectedPaperSize = selectedSizeElement ? selectedSizeElement.value : 'LETTER';
                     await generatePDF(selectedPaperSize);
                 });
-
-                // --- PDF Generation Logic (unchanged) ---
-                async function generatePDF(selectedPaperSize) {
-                    console.log(`Generating PDF for ${selectedPaperSize} paper size...`);
-                    if (!tk_pdf || tk_pdf.getMEI() === '') {
-                        showAlert("Verovio PDF toolkit is not ready or no MEI data loaded. Please load a score first.");
-                        console.error("Verovio PDF Toolkit (tk_pdf) not initialized or MEI data is empty.");
-                        return;
-                    }
-                    try {
-                        const originalPdfOptions = tk_pdf.getOptions();
-                        const paperSizeOptions = {
-                            'LETTER': {
-                                pdfkitSize: 'LETTER',
-                                verovioPageWidth: 2000,
-                                verovioPageHeight: 1100,
-                                verovioScale: 40
-                            },
-                            'A4': {
-                                pdfkitSize: 'A4',
-                                verovioPageWidth: 2000,
-                                verovioPageHeight: 1180,
-                                verovioScale: 40
-                            },
-                            'A5': {
-                                pdfkitSize: 'A5',
-                                verovioPageWidth: 2000,
-                                verovioPageHeight: 830,
-                                verovioScale: 40
-                            },
-                            'OCTAVO': {
-                                pdfkitSize: [486, 756],
-                                verovioPageWidth: 2000,
-                                verovioPageHeight: 1050,
-                                verovioScale: 40
-                            }
-                        };
-                        const currentPaperSettings = paperSizeOptions[selectedPaperSize];
-                        let doc = new PDFDocument({
-                            size: currentPaperSettings.pdfkitSize,
-                            layout: 'portrait',
-                            margins: { top: 10, bottom: 10, left: 10, right: 10 }
-                        });
-                        const stream = doc.pipe(blobStream());
-                        stream.on('finish', function() {
-                            const blob = stream.toBlob('application/pdf');
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.style.display = 'none';
-                            a.href = url;
-                            a.download = `verovio-output-${selectedPaperSize.toLowerCase()}.pdf`;
-                            document.body.appendChild(a);
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                            document.body.removeChild(a);
-                            console.log('PDF download initiated from Verovio SVG.');
-                            showAlert("PDF exported successfully!");
-                        });
-                        stream.on('error', function(err) {
-                            console.error("Error creating PDF stream:", err);
-                            showAlert("An error occurred during PDF creation.");
-                        });
-                        tk_pdf.setOptions({
-                            scale: currentPaperSettings.verovioScale,
-                            pageWidth: currentPaperSettings.verovioPageWidth,
-                            pageHeight: currentPaperSettings.verovioPageHeight,
-                            adjustPageHeight: true
-                        });
-                        console.log("Verovio PDF options set for PDF generation before rendering pages.");
-                        const pageCount = tk_pdf.getPageCount();
-                        if (pageCount === 0) {
-                            throw new Error("Verovio PDF toolkit reports no pages to render. Check MEI data.");
-                        }
-                        console.log("Total pages to render for PDF:", pageCount);
-                        for (let i = 1; i <= pageCount; i++) {
-                            const svgString = tk_pdf.renderToSVG(i);
-                            console.log(`Processing SVG page ${i} from PDF toolkit. Length: ${svgString.length}. First 200 chars:`, svgString.substring(0, 200));
-                            if (typeof svgString !== 'string' || svgString.trim() === '' || !svgString.startsWith('<svg')) {
-                                console.error(`SVG string for page ${i} from PDF toolkit is invalid or empty:`, svgString);
-                                throw new Error(`Invalid or malformed SVG content for page ${i}.`);
-                            }
-                            const drawableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
-                            const drawableHeight = doc.page.height - doc.page.margins.top - doc.page.margins.bottom;
-                            await SVGtoPDF(doc, svgString, doc.page.margins.left, doc.page.margins.top, {
-                                width: drawableWidth,
-                                height: drawableHeight,
-                                preserveAspectRatio: 'xMidYMid meet',
-                                assumeGIsCursive: true
-                            });
-                        }
-                        doc.end();
-                        tk_pdf.setOptions(originalPdfOptions);
-                    } catch (error) {
-                        console.error("Failed to generate PDF:", error);
-                        showAlert("Failed to generate PDF. Check console for details.");
-                    }
-                }
             })
             .catch(error => {
                 console.error("Error loading or processing MEI data:", error);
