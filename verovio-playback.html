@@ -267,10 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const selectedPaperSize = selectedSizeElement ? selectedSizeElement.value : 'LETTER';
                     await generatePDF(selectedPaperSize);
                 });
-            })
-            .catch(error => {
-                console.error("Error loading or processing MEI data:", error);
-                showAlert("Error loading or processing MEI data. Check console for details.");
             });
     };
 });
