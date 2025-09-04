@@ -114,58 +114,57 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function showPage(pageNum) {
-        currentPage = pageNum;
-        document.getElementById("notation").innerHTML = tk.renderToSVG(currentPage);
+    function updateNoteHighlights(currentTimeMs) {
+    if (!timemap) return;
+    let lastEventIndex = -1;
+    for (let i = 0; i < timemap.length; i++) {
+        if (timemap[i].tstamp <= currentTimeMs) lastEventIndex = i;
+        else break;
+    }
+    if (lastEventIndex === -1) return;
+    let onNotes = new Set();
+    for (let i = 0; i <= lastEventIndex; i++) {
+        if (timemap[i].on) timemap[i].on.forEach(id => onNotes.add(id));
+        if (timemap[i].off) timemap[i].off.forEach(id => onNotes.delete(id));
+    }
+    // --- Auto page switch if any highlight note is not on current page ---
+    let pageToShow = null;
+    for (let id of onNotes) {
+        if (noteIdToPage[id] && noteIdToPage[id] !== currentPage) {
+            pageToShow = noteIdToPage[id];
+            break; // Switch to the first note's page found
+        }
+    }
+    if (pageToShow && pageToShow !== currentPage) {
+        // Clear highlights before page change
+        currentlyHighlightedVerovioIds.clear();
+        showPage(pageToShow, currentTimeMs);
+        return; // The highlight for this tick is handled by highlightNotesOnCurrentPage
     }
 
-    // --- HIGHLIGHTING LOGIC: uses timemap, called every 50ms during playback ---
-    function updateNoteHighlights(currentTimeMs) {
-        if (!timemap) return;
-
-        // Find the latest MIDI event index for current time
-        let lastEventIndex = -1;
-        for (let i = 0; i < timemap.length; i++) {
-            if (timemap[i].tstamp <= currentTimeMs) lastEventIndex = i;
-            else break;
+    // Remove highlights for notes that should not be on
+    currentlyHighlightedVerovioIds.forEach(id => {
+        if (!onNotes.has(id)) {
+            const noteElement = document.getElementById(id);
+            if (noteElement) noteElement.classList.remove("currently-playing");
+            currentlyHighlightedVerovioIds.delete(id);
         }
-        if (lastEventIndex === -1) return;
+    });
 
-        // Collect the set of notes that should be highlighted ("on" but not yet "off")
-        let onNotes = new Set();
-        for (let i = 0; i <= lastEventIndex; i++) {
-            if (timemap[i].on) timemap[i].on.forEach(id => onNotes.add(id));
-            if (timemap[i].off) timemap[i].off.forEach(id => onNotes.delete(id));
-        }
-
-        // --- NEW: Auto page switch if any highlight note is not on current page ---
-        for (let id of onNotes) {
-            if (noteIdToPage[id] && noteIdToPage[id] !== currentPage) {
-                showPage(noteIdToPage[id]);
-                break; // Switch to the first note's page found
-            }
-        }
-
-        // Remove highlights for notes that should not be on
-        currentlyHighlightedVerovioIds.forEach(id => {
-            if (!onNotes.has(id)) {
-                const noteElement = document.getElementById(id);
-                if (noteElement) noteElement.classList.remove("currently-playing");
-                currentlyHighlightedVerovioIds.delete(id);
-            }
-        });
-
-        // Add highlights for notes that should be on
-        onNotes.forEach(id => {
-            if (!currentlyHighlightedVerovioIds.has(id)) {
+    // Add highlights for notes that should be on
+    onNotes.forEach(id => {
+        if (!currentlyHighlightedVerovioIds.has(id)) {
+            // Only highlight if the note is on the current page
+            if (noteIdToPage[id] === currentPage) {
                 const noteElement = document.getElementById(id);
                 if (noteElement) {
                     noteElement.classList.add("currently-playing");
                     currentlyHighlightedVerovioIds.add(id);
                 }
             }
-        });
-    }
+        }
+    });
+}
 
     verovio.module.onRuntimeInitialized = () => {
         tk = new verovio.toolkit();
