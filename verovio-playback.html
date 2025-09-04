@@ -49,16 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const player = document.querySelector('#verovio-midi-player');
     const loadAudioButton = document.getElementById('loadAudio');
     const stopMIDIButton = document.getElementById('stopMIDI');
-    const printPDFButton = document.getElementById('printPDF');
-    const paperSizeModal = document.getElementById('paperSizeModal');
-    const generatePdfButton = document.getElementById('generatePdfButton');
-    const cancelPdfButton = document.getElementById('cancelPdfButton');
 
     let timemap = null;
     let currentlyHighlightedVerovioIds = new Set();
-    let highlightInterval = null; // NEW: Interval handle for highlighting
+    let highlightInterval = null;
 
-    // --- BEGIN: Helper functions (not used by main flow, kept for possible future use) ---
+    // NEW: Page and note mapping for auto-pagination
+    let noteIdToPage = {};
+    let currentPage = 1;
+
     const highlightId = 'data-highlight';
     function highlightNote(note, id = '') {
         if (!note) return;
@@ -75,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function unHighlightAllElements() {
         document.querySelectorAll('.currently-playing').forEach((g) => g.classList.remove('currently-playing'));
     }
-    // --- END ---
 
     function showAlert(message) {
         const alertBox = document.createElement('div');
@@ -101,25 +99,51 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(alertBox);
     }
 
+    // --- Map note IDs to their page number for auto-pagination ---
+    function buildNoteIdToPageMap(tk) {
+        noteIdToPage = {};
+        const pageCount = tk.getPageCount();
+        for (let page = 1; page <= pageCount; page++) {
+            const svg = tk.renderToSVG(page);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = svg;
+            const notes = tempDiv.querySelectorAll('g.note[id]');
+            notes.forEach(note => {
+                noteIdToPage[note.id] = page;
+            });
+        }
+    }
+
+    function showPage(pageNum) {
+        currentPage = pageNum;
+        document.getElementById("notation").innerHTML = tk.renderToSVG(currentPage);
+    }
+
     // --- HIGHLIGHTING LOGIC: uses timemap, called every 50ms during playback ---
     function updateNoteHighlights(currentTimeMs) {
-        // Uncomment for debugging:
-        // console.log("Highlight tick", currentTimeMs);
         if (!timemap) return;
+
+        // Find the latest MIDI event index for current time
         let lastEventIndex = -1;
         for (let i = 0; i < timemap.length; i++) {
             if (timemap[i].tstamp <= currentTimeMs) lastEventIndex = i;
             else break;
         }
-        if (lastEventIndex === -1) {
-            // console.log("No events yet for this time.");
-            return;
-        }
+        if (lastEventIndex === -1) return;
 
+        // Collect the set of notes that should be highlighted ("on" but not yet "off")
         let onNotes = new Set();
         for (let i = 0; i <= lastEventIndex; i++) {
             if (timemap[i].on) timemap[i].on.forEach(id => onNotes.add(id));
             if (timemap[i].off) timemap[i].off.forEach(id => onNotes.delete(id));
+        }
+
+        // --- NEW: Auto page switch if any highlight note is not on current page ---
+        for (let id of onNotes) {
+            if (noteIdToPage[id] && noteIdToPage[id] !== currentPage) {
+                showPage(noteIdToPage[id]);
+                break; // Switch to the first note's page found
+            }
         }
 
         // Remove highlights for notes that should not be on
@@ -128,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const noteElement = document.getElementById(id);
                 if (noteElement) noteElement.classList.remove("currently-playing");
                 currentlyHighlightedVerovioIds.delete(id);
-                // console.log("Unhighlighted:", id, noteElement);
             }
         });
 
@@ -136,21 +159,16 @@ document.addEventListener("DOMContentLoaded", () => {
         onNotes.forEach(id => {
             if (!currentlyHighlightedVerovioIds.has(id)) {
                 const noteElement = document.getElementById(id);
-                // console.log("Trying to highlight:", id, noteElement);
                 if (noteElement) {
                     noteElement.classList.add("currently-playing");
                     currentlyHighlightedVerovioIds.add(id);
-                    // console.log("Highlighted:", id, noteElement);
-                } // else {
-                  // console.log("Element not found for:", id);
-                // }
+                }
             }
         });
     }
 
     verovio.module.onRuntimeInitialized = () => {
         tk = new verovio.toolkit();
-        tk_pdf = new verovio.toolkit();
 
         // Calculate pageWidth and pageHeight
         let pWidth = window.innerWidth;
@@ -162,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         let pageHeight = window.innerHeight * 100 / zoom;
 
-        // Set options for Verovio DISPLAY
         tk.setOptions({
             pageHeight: pageHeight,
             pageWidth: (pageWidthBase - 100) * 0.96,
@@ -174,54 +191,50 @@ document.addEventListener("DOMContentLoaded", () => {
             svgAdditionalAttribute: ["note@pname", "note@oct"]
         });
 
-        let currentPage = 1;
-
         // --- Unified Handler for 'Load Audio' button ---
         const loadAudioAndPlayHandler = async () => {
-    player.style.display = 'block';
-    try {
-        await Tone.start();
-        console.log("Tone.js AudioContext resumed.");
-    } catch (error) {
-        console.error("Failed to resume Tone.js AudioContext:", error);
-        showAlert("Failed to start audio. Please ensure browser allows autoplay or interact with the page.");
-        return;
-    }
+            player.style.display = 'block';
+            try {
+                await Tone.start();
+                console.log("Tone.js AudioContext resumed.");
+            } catch (error) {
+                console.error("Failed to resume Tone.js AudioContext:", error);
+                showAlert("Failed to start audio. Please ensure browser allows autoplay or interact with the page.");
+                return;
+            }
 
-    // Always regenerate MIDI and set src, to guarantee playback starts from beginning
-    let base64midi = tk.renderToMIDI();
-    player.src = 'data:audio/midi;base64,' + base64midi;
+            // Always regenerate MIDI and set src, to guarantee playback starts from beginning
+            let base64midi = tk.renderToMIDI();
+            player.src = 'data:audio/midi;base64,' + base64midi;
 
-    // Force player to reload the new source
-    if (typeof player.load === "function") player.load();
+            // Force player to reload the new source
+            if (typeof player.load === "function") player.load();
 
-    // Stop any existing playback first
-    if (typeof player.stop === "function") player.stop();
+            // Stop any existing playback first
+            if (typeof player.stop === "function") player.stop();
 
-    // Small timeout ensures the player has loaded the new MIDI
-    setTimeout(() => {
-        if (typeof player.start === "function") player.start();
-        console.log("player.start() called.");
-    }, 300);
+            // Small timeout ensures the player has loaded the new MIDI
+            setTimeout(() => {
+                if (typeof player.start === "function") player.start();
+                console.log("player.start() called.");
+            }, 300);
 
-    // Start highlight interval (if not already running)...
-    if (highlightInterval) clearInterval(highlightInterval);
-    highlightInterval = setInterval(() => {
-        if (player && !player.paused && !player.ended) {
-            updateNoteHighlights(player.currentTime * 1000);
-        }
-    }, 50);
-};
+            // Start highlight interval (if not already running)...
+            if (highlightInterval) clearInterval(highlightInterval);
+            highlightInterval = setInterval(() => {
+                if (player && !player.paused && !player.ended) {
+                    updateNoteHighlights(player.currentTime * 1000);
+                }
+            }, 50);
+        };
 
         // --- Stop MIDI and highlighting ---
         const stopMIDIHandler = () => {
             player.stop();
-            // Stop highlight interval
             if (highlightInterval) {
                 clearInterval(highlightInterval);
                 highlightInterval = null;
             }
-            // Clear all highlights from the DOM
             currentlyHighlightedVerovioIds.forEach(id => {
                 const noteElement = document.getElementById(id);
                 if (noteElement) noteElement.classList.remove("currently-playing");
@@ -240,14 +253,12 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(meiXML => {
                 tk.loadData(meiXML);
-                tk_pdf.loadData(meiXML);
                 timemap = tk.renderToTimemap();
-                console.log("Timemap created:", timemap);
-
-                // Render the initial SVG for display
+                buildNoteIdToPageMap(tk);
+                currentPage = 1;
                 document.getElementById("notation").innerHTML = tk.renderToSVG(currentPage);
 
-                // --- Attach Event Listeners and Callbacks after data is loaded ---
+                // --- Attach Event Listeners after data is loaded ---
                 loadAudioButton.addEventListener("click", loadAudioAndPlayHandler);
                 stopMIDIButton.addEventListener("click", stopMIDIHandler);
             });
