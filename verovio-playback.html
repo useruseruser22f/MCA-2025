@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version 3.1 -->
+<!-- Version 3.1.1 -->
 <head>
   <meta charset="utf-8">
   <meta http-equiv='cache-control' content='no-cache'> 
@@ -113,6 +113,40 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
+
+    function showPage(pageNum, currentTimeMs) {
+    currentPage = pageNum;
+    document.getElementById("notation").innerHTML = tk.renderToSVG(currentPage);
+    currentlyHighlightedVerovioIds.clear(); // clear highlight cache
+
+    // After rendering, highlight notes for this tick
+    highlightNotesOnCurrentPage(currentTimeMs);
+}
+
+function highlightNotesOnCurrentPage(currentTimeMs) {
+    if (!timemap) return;
+    let lastEventIndex = -1;
+    for (let i = 0; i < timemap.length; i++) {
+        if (timemap[i].tstamp <= currentTimeMs) lastEventIndex = i;
+        else break;
+    }
+    if (lastEventIndex === -1) return;
+    let onNotes = new Set();
+    for (let i = 0; i <= lastEventIndex; i++) {
+        if (timemap[i].on) timemap[i].on.forEach(id => onNotes.add(id));
+        if (timemap[i].off) timemap[i].off.forEach(id => onNotes.delete(id));
+    }
+    // Only highlight notes that exist on the current page
+    onNotes.forEach(id => {
+        if (noteIdToPage[id] === currentPage) {
+            const noteElement = document.getElementById(id);
+            if (noteElement) {
+                noteElement.classList.add("currently-playing");
+                currentlyHighlightedVerovioIds.add(id);
+            }
+        }
+    });
+}
 
     function updateNoteHighlights(currentTimeMs) {
     if (!timemap) return;
