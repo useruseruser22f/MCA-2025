@@ -1,3 +1,5 @@
+<!-- Version 1.0 -->
+
 # Title
 
 Some text before the verovio score is inlined.
