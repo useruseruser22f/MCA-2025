@@ -5,11 +5,11 @@
 
 For my dataset theme, I have selected Frédéric Chopin (1810–1849), the Polish composer and pianist known primarily for his solo piano works. Chopin is an ideal subject for a curated dataset because:
 
-His notated music (scores, manuscripts, engravings) is widely available and in the public domain.
+His notated music scores, manuscripts, engravings are widely available and in the public domain.
 
 High-quality audio recordings exist from numerous performers, including historical, classical, and modern interpretations.
 
-Well-structured metadata, such as opus numbers, dates of composition, keys, catalog systems (e.g., Opus, Bjørn, Brown, Kobylanski)—is extensively documented.
+Well-structured metadata, such as opus numbers, dates of composition, keys, catalog systems is extensively documented.
 
 Chopin’s body of work includes nocturnes, waltzes, mazurkas, études, preludes, ballades, and polonaises, all of which offer rich material for analysis and dataset creation.
 
@@ -18,27 +18,27 @@ General Challenges in Music Data
 
 Working with music-related data often involves several difficulties:
 
-Access limitations
+Access limitations:
 
 Modern works may be under copyright, restricting score access, but even public-domain music can be scattered across archives with inconsistent availability.
 
-Metadata inconsistency
+Metadata inconsistency:
 
 Different archives may use different labeling systems (opus numbers vs. alternative catalogs), making cross-referencing difficult.
 
-Version variability
+Version variability:
 
 Musical works often exist in multiple editions, arrangements, or performances, which complicates dataset standardization.
 
-Format fragmentation
+Format fragmentation:
 
 Scores may come as PDFs, MusicXML, or MIDI; audio might be MP3, WAV, or streaming-only; metadata may appear in CSV, JSON, or embedded within websites.
 
-Curation challenges
+Curation challenges:
 
-Music collections are often spread across different repositories (IMSLP, libraries, streaming platforms), requiring manual gathering and verification.
+Music collections are often spread across different repositories like IMSLP, libraries, streaming platforms, requiring manual gathering and verification.
 
-Challenges Specific to Chopin
+Challenges Specific to Chopin:
 
 Chopin’s music is widely documented, but it still presents unique challenges:
 
@@ -46,11 +46,11 @@ Multiple editions and editorial revisions: Chopin did not always leave definitiv
 
 Variant cataloging systems: Different scholars (e.g., Brown, Kobylanski, Chomiński) have assigned different catalog numbers to certain works. Metadata across sources may not align.
 
-Interpretive diversity in recordings: Chopin’s music relies heavily on performance nuance (rubato, pedal usage). Audio datasets may vary significantly depending on performer style and recording quality.
+Interpretive diversity in recordings: Chopin’s music relies heavily on performance nuance like rubato and pedal usage. Audio datasets may vary significantly depending on performer style and recording quality.
 
 Manuscript availability: Some manuscripts are incomplete, damaged, or scattered across private collections and museums.
 
-How Chopin Data Is Currently Curated
+How Chopin Data Is Currently Curated:
 
 Scores: Most public-domain scores are curated by digital libraries such as IMSLP, The Chopin Institute, and various national library archives. They provide PDFs, scans of original manuscripts, and sometimes MusicXML or MIDI formats.
 
