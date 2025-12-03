@@ -24,18 +24,6 @@
     <script type="module" src="https://www.verovio.org/javascript/app/verovio-app.js"></script>
 </head>
 <body>
-    <div class="header">
-        <h1>Week 3</h1>
-        <p>
-            Here I compare three elements in my Cantabile encoding (MusicXML vs MEI):
-            <code>&lt;note&gt;</code>, <code>&lt;measure&gt;</code>, and clefs.
-            MusicXML uses nested child elements (e.g. &lt;pitch&gt;, &lt;duration&gt;),
-            while MEI often stores the same information as attributes on
-            &lt;note&gt; and &lt;clef&gt;. This makes MEI more compact and suited for
-            metadata-rich, analytical work, whereas MusicXML is designed mainly for
-            interchange between notation programs and playback.
-        </p>
-    </div>
     <verovio-app
         file="data/week3/chopin-uncompressed.mei"
         options='{
