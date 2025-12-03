@@ -11,6 +11,7 @@
 <body>
 <main class="content">
 
+  
   <nav class="tabs">
       <a href="../index.html" class="tab">Week 1</a>
       <a href="week2.html" class="tab">Week 2</a>
@@ -26,26 +27,163 @@
   <h1>Week 7 – Curating Metadata and Displaying MEI on the Web</h1>
 
   <p>
-      This page displays the updated MEI metadata for my piece,
-      <em>Cantabile in B-flat major, B.84</em>, alongside the engraved Verovio score.
-      Metadata has been enriched with genre classification and licensing information.
+      This week I revisited the MEI metadata for my dataset theme,
+      Frédéric Chopin’s <em>Cantabile in B-flat major, B.84</em>, and focused on two
+      tasks: (1) updating the metadata to include genre and licensing information, and
+      (2) learning how to display that metadata on a web page alongside the engraved
+      score using Verovio and CETEIcean.
   </p>
 
-  <h2>MEI Metadata</h2>
-  <div id="MEImeta"></div>
+  <!-- TASK 1 -->
+  <section class="box">
+    <h2>Task 1 – Updating the MEI Metadata</h2>
+    <p>
+        I started from the MEI file I created in Week 5 and exported a new version
+        for this lab, which I saved as <code>chopin-meta.mei</code> in my
+        <code>data/week7/</code> folder. In this new file I edited the
+        <code>&lt;meiHead&gt;</code> to add both a genre classification and explicit
+        licensing information.
+    </p>
 
-  <h2>Rendered Score</h2>
-  <div id="app" class="panel" style="border: 1px solid lightgray; min-height: 800px;">
-      Verovio is loading...
-  </div>
+    <h3>Genre classification</h3>
+    <p>
+        To encode the genre, I added an extra annotation inside
+        <code>&lt;notesStmt&gt;</code>:
+    </p>
 
-  <h2>Discussion</h2>
-  <p>
-      To improve formatting, I would separate metadata into labelled fields,
-      add spacing and font-weight, and disable raw block rendering. CSS could
-      be used to style each element, or Javascript could restructure the
-      extracted metadata into cleaner HTML panels.
-  </p>
+<pre><code>&lt;notesStmt&gt;
+  &lt;annot&gt;
+    Encoded for MCA-2025 metadata work. Schema includes title,
+    composer, publisher, date, genre and catalogue number.
+  &lt;/annot&gt;
+  &lt;annot type="genre"&gt;Character piece (cantabile piano work)&lt;/annot&gt;
+&lt;/notesStmt&gt;
+</code></pre>
+
+    <p>
+        I chose the label “character piece (cantabile piano work)” because the piece
+        is a short, lyrical solo that fits with Chopin’s other character pieces.
+        Recording this as metadata means that, in a larger catalogue, users could
+        filter not only by composer and key but also by the type of piece.
+    </p>
+
+    <h3>Licensing (availability)</h3>
+    <p>
+        I also added licensing information inside <code>&lt;pubStmt&gt;</code> using
+        an <code>&lt;availability&gt;</code> element:
+    </p>
+
+<pre><code>&lt;pubStmt&gt;
+  &lt;publisher&gt;IMSLP – International Music Score Library Project&lt;/publisher&gt;
+  &lt;pubPlace&gt;Paris&lt;/pubPlace&gt;
+  &lt;date isodate="1834"&gt;1834&lt;/date&gt;
+
+  &lt;availability&gt;
+    Licensed under Creative Commons Attribution-ShareAlike 4.0 International
+    (CC BY-SA 4.0). See: https://creativecommons.org/licenses/by-sa/4.0/
+  &lt;/availability&gt;
+&lt;/pubStmt&gt;
+</code></pre>
+
+    <p>
+        I chose the Creative Commons Attribution-ShareAlike 4.0 licence because the
+        underlying score is in the public domain, but I still want people who reuse
+        my encoding to give credit and to share any derivative encodings under the
+        same open licence. This feels appropriate for a teaching and research
+        project where reuse and adaptation are encouraged but attribution still
+        matters.
+    </p>
+
+    <p>
+        After making these changes I checked the header in the Verovio XML view and
+        adjusted the structure (for example, placing <code>&lt;availability&gt;</code>
+        inside <code>&lt;pubStmt&gt;</code>) until no red validation errors remained.
+    </p>
+
+    <p>
+        You can download the updated Week 7 MEI file here:
+    </p>
+    <p>
+        <a href="../data/week7/chopin-meta.mei">
+            Download Week 7 MEI file (chopin-meta.mei)
+        </a>
+    </p>
+  </section>
+
+  <section class="box">
+    <h2>Task 2 – Rendering Metadata and Score in HTML</h2>
+    <p>
+        For the second task I connected this enriched MEI file to an HTML page using
+        Verovio and CETEIcean. In the script sections below, I changed the example
+        file paths so that both tools load
+        <code>../data/week7/chopin-meta.mei</code>.
+    </p>
+
+    <p>
+        First, the Verovio App renders the musical notation inside the
+        <code>#app</code> panel:
+    </p>
+
+<pre><code>fetch("../data/week7/chopin-meta.mei")
+  .then(response =&gt; response.text())
+  .then(text =&gt; app.loadData(text));</code></pre>
+
+    <p>
+        Then, CETEIcean parses the MEI file and extracts the
+        <code>&lt;meiHead&gt;</code>, which is inserted into the
+        <code>&lt;div id="MEImeta"&gt;</code> element at the top of this page:
+    </p>
+
+<pre><code>var CETEI4MEI = new CETEI();
+CETEI4MEI.getHTML5("../data/week7/chopin-meta.mei", function(data) {
+  var meiHead = data.querySelector("mei-meiHead");
+  document.getElementById("MEImeta").appendChild(meiHead);
+});</code></pre>
+
+    <p>
+        When I open this page via GitHub Pages, I can see the MEI metadata as a block
+        of unformatted text (generated from the MEI header) followed by the engraved
+        Verovio score. This confirms that my updated metadata is being read correctly
+        and that my new MEI file is fully wired into the web page.
+    </p>
+
+    <h3>How I would format the metadata</h3>
+    <p>
+        At the moment the metadata appears as a fairly dense section of text. To make
+        it more user friendly for someone browsing the catalogue, I would:
+    </p>
+    <ul>
+      <li>Group fields into sections such as <em>Work details</em> (title, composer,
+          genre), <em>Publication</em> (publisher, place, date) and
+          <em>Licensing</em>.</li>
+      <li>Use headings or a table so that labels (for example “Composer:”) are
+          visually distinct from the values.</li>
+      <li>Display the licence as a short badge (for example “CC BY-SA 4.0”) with a
+          clear clickable link to the Creative Commons page.</li>
+      <li>Use CSS (for example in <code>CETEIcean.css</code>) to adjust font sizes,
+          margins and spacing so that the metadata reads like a neat information
+          panel instead of raw XML text.</li>
+    </ul>
+
+    <p>
+        The optional part of the lab suggests two approaches: using CSS templates
+        (such as <code>metaCSS1.html</code>) or using Javascript
+        (<code>metaJS.html</code>) to generate custom HTML. For my current level of
+        comfort, a CSS-based approach would be easier, because it lets me keep all
+        of the structure in MEI and simply change the way the existing elements are
+        displayed on the page.
+    </p>
+  </section>
+
+  <section class="box">
+    <h2>Live Metadata (from MEI Header)</h2>
+    <div id="MEImeta"></div>
+
+    <h2>Rendered Score</h2>
+    <div id="app" class="panel" style="border: 1px solid lightgray; min-height: 800px;">
+        Verovio is loading...
+    </div>
+  </section>
 
 </main>
 
