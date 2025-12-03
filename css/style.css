@@ -1,8 +1,73 @@
-/* Add your own CSS rules here */
-#description {
-  margin: 0 0 1em 0;
+body {
+    background-color: #f6f1e8;   
+    color: #333333;              
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    line-height: 1.6;
 }
 
-tei-teiHeader {
-  display: none;
+main, .content {
+    max-width: 900px;
+    margin: auto;
 }
+
+nav.tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid #f7cddd; 
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+nav.tabs a.tab {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border: 1px solid #f7cddd;        
+    border-bottom: none;
+    background: #fce6ef;             
+    border-radius: 8px 8px 0 0;
+    color: #333333;                   
+    font-weight: 500;
+}
+
+nav.tabs a.tab:hover {
+    background: #f9dbe7;              
+}
+
+nav.tabs a.tab.active {
+    background: #ffffff;              
+    font-weight: bold;
+    border-bottom: 2px solid #ffffff;  
+}
+
+
+h1, h2, h3 {
+    color: #333333; 
+    margin-top: 1.5rem;
+}
+
+
+img {
+    display: block;
+    margin: 1rem auto;
+    border: 2px solid #f7cddd; 
+    max-width: 95%;
+}
+
+a {
+    color: #7a4e6a; 
+}
+
+a:hover {
+    color: #b26b8a;
+}
+
+.box {
+    background: #ffffff;
+    border: 1px solid #f7cddd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
