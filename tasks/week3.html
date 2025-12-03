@@ -1,1 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Week 3 – Encoding Notated Music (MusicXML &amp; MEI)</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<main class="content">
+    <nav class="tabs">
+        <a href="../index.html" class="tab">Week 1</a>
+        <a href="week2.html" class="tab">Week 2</a>
+        <a href="week3.html" class="tab active">Week 3</a>
+        <a href="#" class="tab">Week 4</a>
+        <a href="#" class="tab">Week 5</a>
+        <a href="#" class="tab">Week 6</a>
+        <a href="#" class="tab">Week 7</a>
+        <a href="#" class="tab">Week 8</a>
+        <a href="#" class="tab">Week 9</a>
+        <a href="#" class="tab">Week 10</a>
+    </nav>
+
+    <section class="box">
+        <h1>Week 3: Encoding Notated Music – MusicXML &amp; MEI</h1>
+        <p>
+            In this week’s lab I worked with the score I created last week,
+            Frédéric Chopin’s Cantabile in B-flat major, B.84, and focused on
+            encoding the notation in two symbolic formats: MusicXML and MEI.
+            The goal was to make the piece accessible in a way that does not depend on MuseScore,
+            and to understand how the same musical information is described in different
+            encoding standards.
+        </p>
+    </section>
+
+    <section class="box">
+        <h2>Task 1 – Exporting to MusicXML and Converting to MEI</h2>
+
+        <h3>1. Exporting MusicXML from MuseScore Studio</h3>
+        <p>
+            First, I opened my MuseScore file of Cantabile in B-flat major, B.84 in
+            MuseScore Studio. I used File then Export… and chose
+            Uncompressed MusicXML as the format.
+            This created a .musicxml file that contains a structured,
+            text-based description of the score like notes, measures, clefs, and key signatures.
+        </p>
+
+        <p>
+            Download link to my exported MusicXML file:
+        </p>
+        <p>
+            👉
+            <a href="PUT-MUSICXML-LINK-HERE">
+                Download my Cantabile MusicXML file
+            </a>
+        </p>
+
+        <h3>2. Converting MusicXML to MEI with Verovio</h3>
+        <p>
+            Next, I went to the Verovio MusicXML converter at
+            <a href="https://www.verovio.org/musicxml.html">verovio.org/musicxml.html</a>.
+            I uploaded my MusicXML file, clicked <strong>Convert to MEI</strong>,
+            and Verovio rendered the score in the browser.
+            Once the engraving looked correct, I used <strong>File → Export MEI</strong>
+            to download an <code>.mei</code> file.
+        </p>
+
+        <p>
+            I then uploaded this MEI file to my GitHub repository (in
+            <code>data/week3/</code>) and edited <code>verovio.html</code> so that the
+            <code>file</code> variable pointed to my MEI file.
+            This allows my Chopin score to be rendered directly in the browser using Verovio.
+        </p>
+
+        <p>
+            👉
+            <a href="PUT-MEI-LINK-HERE">
+                Download my Cantabile MEI file
+            </a>
+        </p>
+
+        <p>
+            👉 You can view the engraved MEI in Verovio here:
+            <a href="../verovio.html">Verovio viewer page</a>.
+        </p>
+    </section>
+
+    <!-- Task 2: Comparison -->
+    <section class="box">
+        <h2>Task 2 – Comparing MusicXML and MEI Elements</h2>
+        <p>
+            Below I compare three elements as they appear in my MusicXML file and in the
+            converted MEI file: <code>&lt;note&gt;</code>, <code>&lt;measure&gt;</code>, and
+            the representation of clefs.
+            I focused on what information is stored as attributes,
+            which child elements are used, and what this suggests about
+            each standard.
+        </p>
+
+        <h3>1. <code>&lt;note&gt;</code> (MusicXML) vs. <code>&lt;note&gt;</code> (MEI)</h3>
+        <ul>
+            <li>
+                In <strong>MusicXML</strong>, a note is described with nested child elements such as
+                <code>&lt;pitch&gt;</code> (containing <code>&lt;step&gt;</code>,
+                <code>&lt;alter&gt;</code>, and <code>&lt;octave&gt;</code>),
+                <code>&lt;duration&gt;</code>, <code>&lt;voice&gt;</code>, and
+                <code>&lt;type&gt;</code> for the notated value (e.g. quarter, eighth).
+            </li>
+            <li>
+                In <strong>MEI</strong>, the same information is usually stored as
+                attributes on a single <code>&lt;note&gt;</code> element, such as
+                <code>@pname</code> (pitch name), <code>@oct</code> (octave),
+                <code>@accid</code> (accidental), and <code>@dur</code> (duration).
+            </li>
+            <li>
+                This means MusicXML tends to represent notes using a more deeply nested
+                structure, while MEI encodes many musical properties directly on the element.
+                MEI’s approach can be more compact and arguably closer to how a musicologist
+                might reason about the note, but MusicXML’s structure may be easier for
+                notation programs that treat pitch, duration and voice as separate modules.
+            </li>
+        </ul>
+
+        <h3>2. <code>&lt;measure&gt;</code> (MusicXML) vs. MEI measure encoding</h3>
+        <ul>
+            <li>
+                In <strong>MusicXML</strong>, a <code>&lt;measure&gt;</code> element
+                groups all the musical events that occur within one bar. It often contains
+                <code>&lt;attributes&gt;</code> (for clef, key, and time signature changes)
+                and then a sequence of <code>&lt;note&gt;</code>, <code>&lt;backup&gt;</code>,
+                and <code>&lt;forward&gt;</code> elements used to manage multiple voices
+                and staves.
+            </li>
+            <li>
+                In <strong>MEI</strong>, measures are usually represented by
+                <code>&lt;measure&gt;</code> elements as well, but the coordination of
+                voices and staves is handled using attributes such as <code>@n</code>
+                (measure number) and relationships to staff and layer elements.
+            </li>
+            <li>
+                MusicXML’s use of <code>&lt;backup&gt;</code> and <code>&lt;forward&gt;</code>
+                makes sense for programs that think in terms of a cursor moving through time,
+                whereas MEI’s structure is more hierarchical and can be easier to query for
+                analytical purposes (for example, selecting all notes in a specific layer or
+                staff).
+            </li>
+        </ul>
+
+        <h3>3. Clefs: <code>&lt;clef&gt;</code> (MusicXML) vs. <code>&lt;clef&gt;</code> (MEI)</h3>
+        <ul>
+            <li>
+                In <strong>MusicXML</strong>, clefs are typically specified inside an
+                <code>&lt;attributes&gt;</code> block within a measure. A
+                <code>&lt;clef&gt;</code> element contains child elements such as
+                <code>&lt;sign&gt;</code> (e.g. G, F, C) and <code>&lt;line&gt;</code>
+                (which line of the staff the clef is placed on), and sometimes <code>&lt;clef-octave-change&gt;</code>.
+            </li>
+            <li>
+                In <strong>MEI</strong>, clefs are described by a <code>&lt;clef&gt;</code>
+                element with attributes like <code>@shape</code> (G, F, C),
+                <code>@line</code>, and <code>@dis</code>/<code>@dis.place</code> for octave
+                displacement.
+            </li>
+            <li>
+                Again, MusicXML uses nested elements, while MEI favours attributes.
+                MEI’s approach makes it easier to add additional metadata about the clef directly
+                on the element, whereas MusicXML’s design is closely aligned with the layout and
+                engraving concepts used in notation software.
+            </li>
+        </ul>
+
+        <p>
+            Overall, working with both formats highlighted that
+            <strong>MusicXML</strong> is designed primarily for interchange between
+            notation programs, emphasising layout and playback, while
+            <strong>MEI</strong> is geared towards scholarly encoding and rich metadata,
+            making it powerful for analysis and digital musicology projects like this one.
+        </p>
+    </section>
+
+</main>
+</body>
+</html>
 
