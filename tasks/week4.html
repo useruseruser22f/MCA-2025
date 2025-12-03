@@ -21,31 +21,28 @@
 </nav>
 
 
-    <!-- Intro -->
     <section class="box">
         <h1>Week 4: jSymbolic Analysis of Chopin – Cantabile in B-flat major, B.84</h1>
         <p>
             In this week’s lab, I moved from encoding and visualising my score to
-            <strong>computational analysis</strong>. Using a MIDI export of Frédéric Chopin’s
-            <em>Cantabile in B-flat major, B.84</em>, I analysed the piece with
-            <strong>jSymbolic</strong> to extract numerical features that describe its pitch
+            computational analysis. Using a MIDI export of Frédéric Chopin’s
+            Cantabile in B-flat major, B.84, I analysed the piece with
+            jSymbolic to extract numerical features that describe its pitch
             content and rhythm. This helps to confirm things we might already suspect from
             looking at the score (such as the key and range), but also highlights details
             that are less obvious by eye.
         </p>
     </section>
-
-    <!-- Task 1: jSymbolic -->
     <section class="box">
         <h2>Task 1 – Generating a jSymbolic Analysis</h2>
 
         <h3>1. Exporting to MIDI and running jSymbolic</h3>
         <p>
-            First, I exported my MuseScore version of <em>Cantabile</em> as a
-            <strong>MIDI</strong> file using <strong>File → Export → MIDI</strong>.
+            First, I exported my MuseScore version of Cantabile as a
+            MIDI file using File then Export then MIDI.
             I then opened <code>jSymbolic2.jar</code>, added my MIDI file to the analysis list,
-            and selected a set of pitch- and rhythm-related features. jSymbolic produced
-            output files in CSV (and XML) format, which I opened in Excel to inspect the
+            and selected a set of pitch and rhythm related features. jSymbolic produced
+            output files in CSV and XML format, which I opened in Excel to inspect the
             values.
         </p>
 
@@ -54,28 +51,27 @@
         </p>
         <ul>
             <li>
-                <a href="../data/week4/PUT-YOUR-JSYMBOLIC-CSV-FILE-NAME-HERE.csv">
+                <a href="../data/week4/ACEXML-Feature-value.csv">
                     jSymbolic feature values (CSV)
                 </a>
             </li>
             <li>
-                <a href="../data/week4/PUT-YOUR-JSYMBOLIC-XML-FILE-NAME-HERE.xml">
+                <a href="../data/week4/ACEXML-Feature-value.xml">
                     jSymbolic feature values (XML)
                 </a>
             </li>
         </ul>
-        <p><em>(I will update these filenames to match my actual uploaded files.)</em></p>
 
         <h3>2. Features selected</h3>
         <p>
             For this lab, I focused on the required core features:
         </p>
         <ul>
-            <li><strong>Range</strong> – the distance in semitones between the lowest and highest pitches in the piece.</li>
-            <li><strong>Mean Pitch</strong> – the average MIDI pitch value, showing where the music tends to sit register-wise.</li>
-            <li><strong>Most Common Pitch Class</strong> – the pitch class (0–11) that occurs most frequently; this usually corresponds to the key centre.</li>
-            <li><strong>Last Pitch</strong> – the final sounding pitch of the piece, often confirming the tonal centre.</li>
-            <li><strong>Most Common Rhythmic Value</strong> – the rhythmic duration that appears most often (for example, quavers or crotchets).</li>
+            <li><strong>Range</strong> - the distance in semitones between the lowest and highest pitches in the piece.</li>
+            <li><strong>Mean Pitch</strong> - the average MIDI pitch value, showing where the music tends to sit register wise.</li>
+            <li><strong>Most Common Pitch Class</strong> - the pitch class (0–11) that occurs most frequently; this usually corresponds to the key centre.</li>
+            <li><strong>Last Pitch</strong> - the final sounding pitch of the piece, often confirming the tonal centre.</li>
+            <li><strong>Most Common Rhythmic Value</strong> - the rhythmic duration that appears most often (for example, quavers or crotchets).</li>
         </ul>
 
         <h3>3. Interpretation of the jSymbolic results</h3>
@@ -85,27 +81,27 @@
         </p>
         <ul>
             <li>
-                The <strong>most common pitch class</strong> in my analysis corresponds to
+                The most common pitch class in my analysis corresponds to
                 <strong>B♭</strong>, which confirms that the piece is centred on
                 B-flat major as expected from the score.
             </li>
             <li>
-                The <strong>range</strong> shows a wide span of pitches, typical of Chopin’s
+                The range shows a wide span of pitches, typical of Chopin’s
                 piano writing. This suggests that the piece exploits both lower
                 accompaniment tones and higher melodic notes to create contrast.
             </li>
             <li>
-                The <strong>mean pitch</strong> lies around the middle register of the piano,
+                The mean pitch lies around the middle register of the piano,
                 indicating that, although the range is large, much of the musical material
                 is concentrated near the central area of the keyboard.
             </li>
             <li>
-                The <strong>last pitch</strong> reinforces the tonic, providing a sense of
+                The last pitch reinforces the tonic, providing a sense of
                 closure that matches the tonal expectations of a lyrical, cantabile-style
                 piece.
             </li>
             <li>
-                The <strong>most common rhythmic value</strong> reflects the underlying
+                The most common rhythmic value reflects the underlying
                 pulse of the piece. In my analysis, this value matches the predominant
                 note length seen in the score, confirming the impression of a steady,
                 singing line with relatively consistent rhythmic motion.
@@ -125,7 +121,7 @@
 <section class="box">
     <h2>Task 2 – music21 Piano Roll and Pitch Histogram</h2>
     <p>
-        For the second task this week, I used <strong>music21</strong> in Google Colab to
+        For the second task this week, I used music21 in Google Colab to
         analyse my MusicXML encoding of Chopin’s <em>Cantabile in B-flat major, B.84</em>.
         Working in Colab meant I did not need to install anything on my Mac, and I could
         directly generate graphical analyses of my piece.
@@ -164,9 +160,9 @@
 
     <p>
         The histogram confirms that <strong>B♭</strong> is the most common pitch class,
-        matching both the key signature and the <em>Most Common Pitch Class</em> from my
+        matching both the key signature and the Most Common Pitch Class from my
         jSymbolic analysis. Other highly frequent pitch classes correspond to normal scale
-        degrees of B-flat major (such as F and D), reinforcing a strong tonal centre.
+        degrees of B-flat major such as F and D, reinforcing a strong tonal centre.
     </p>
 
     <p>
