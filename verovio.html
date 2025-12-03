@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- Version 1.0 -->
 <head>
     <meta charset="utf-8">
     <title>My Piece in Verovio</title>
@@ -17,6 +16,8 @@
     }
     .box .header {
        flex: 0 1 auto;
+       padding: 1rem;
+       font-family: Arial, Helvetica, sans-serif;
     }
     .box #app {
         flex: 1 1 auto;
@@ -24,32 +25,45 @@
     </style>
 </head>
 <body>
-    <div id="app">Verovio is loading...</div>
-    <script type="module">
-        import 'https://www.verovio.org/javascript/app/verovio-app.js';
-        
-        const options = {
-            defaultView: 'responsive', // default is 'responsive', alternative is 'document'
-            defaultZoom: 3, // 0-7, default is 4
-            enableResponsive: true, // default is true
-            enableDocument: true // default is true
-        }
-        
-        // A MusicXML file
-        var file = 'data/example.mei'; //file = "data/week3/chopin-uncompressed.xml.musicxml";
+    <div class="box">
+        <div class="header">
+            <h1>Week 3</h1>
+            <p>
+                Here I compare three elements in my Cantabile encoding (MusicXML vs MEI):
+                <code>&lt;note&gt;</code>, <code>&lt;measure&gt;</code>, and clefs.
+                MusicXML uses more nested child elements (for example, pitch and duration
+                are stored in &lt;pitch&gt; and &lt;duration&gt;), while MEI encodes much of
+                the same information as attributes on elements like &lt;note&gt; and &lt;clef&gt;.
+                This makes MEI more compact and metadata-oriented, whereas MusicXML is designed
+                primarily for interchange between notation programs and playback.
+            </p>
+        </div>
 
-        // A MEI file
-        //var file = 'https://github.com/useruseruser22f/MCA-2025/blob/master/data/week3/chopin-uncompressed.mei;
-        
-        const app = new Verovio.App(document.getElementById("app"), options);
-        fetch(file)
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(text) {
-                app.loadData(text);
-            });
-    </script>
+        <div id="app">Verovio is loading...</div>
+
+        <script type="module">
+            import 'https://www.verovio.org/javascript/app/verovio-app.js';
+            
+            const options = {
+                defaultView: 'responsive', // default is 'responsive', alternative is 'document'
+                defaultZoom: 3,            // 0-7, default is 4
+                enableResponsive: true,    // default is true
+                enableDocument: true       // default is true
+            };
+            
+            // Load my Chopin Cantabile MEI file (Week 3)
+            var file = "data/week3/chopin-uncompressed.mei";
+
+            const app = new Verovio.App(document.getElementById("app"), options);
+            fetch(file)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(text) {
+                    app.loadData(text);
+                });
+        </script>
     </div>
 </body>
 </html>
+
