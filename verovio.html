@@ -4,66 +4,48 @@
     <meta charset="utf-8">
     <title>My Piece in Verovio</title>
     <style>
-    html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-    }
-    .box {
-        display: flex;
-        flex-flow: column;
-        height: 100%;
-    }
-    .box .header {
-       flex: 0 1 auto;
-       padding: 1rem;
-       font-family: Arial, Helvetica, sans-serif;
-    }
-    .box #app {
-        flex: 1 1 auto;
-    }
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .header {
+            padding: 1rem;
+        }
+        verovio-app {
+            width: 100%;
+            height: calc(100% - 120px); /* leave space for header */
+            display: block;
+        }
     </style>
+    <script type="module" src="https://www.verovio.org/javascript/app/verovio-app.js"></script>
 </head>
 <body>
-    <div class="box">
-        <div class="header">
-            <h1>Week 3</h1>
-            <p>
-                Here I compare three elements in my Cantabile encoding (MusicXML vs MEI):
-                <code>&lt;note&gt;</code>, <code>&lt;measure&gt;</code>, and clefs.
-                MusicXML uses more nested child elements (for example, pitch and duration
-                are stored in &lt;pitch&gt; and &lt;duration&gt;), while MEI encodes much of
-                the same information as attributes on elements like &lt;note&gt; and &lt;clef&gt;.
-                This makes MEI more compact and metadata-oriented, whereas MusicXML is designed
-                primarily for interchange between notation programs and playback.
-            </p>
-        </div>
-
-        <div id="app">Verovio is loading...</div>
-
-        <script type="module">
-            import 'https://www.verovio.org/javascript/app/verovio-app.js';
-            
-            const options = {
-                defaultView: 'responsive', // default is 'responsive', alternative is 'document'
-                defaultZoom: 3,            // 0-7, default is 4
-                enableResponsive: true,    // default is true
-                enableDocument: true       // default is true
-            };
-            
-            // Load my Chopin Cantabile MEI file (Week 3)
-            var file = "data/week3/chopin-uncompressed.mei";
-
-            const app = new Verovio.App(document.getElementById("app"), options);
-            fetch(file)
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(text) {
-                    app.loadData(text);
-                });
-        </script>
+    <div class="header">
+        <h1>Week 3</h1>
+        <p>
+            Here I compare three elements in my Cantabile encoding (MusicXML vs MEI):
+            <code>&lt;note&gt;</code>, <code>&lt;measure&gt;</code>, and clefs.
+            MusicXML uses nested child elements (e.g. &lt;pitch&gt;, &lt;duration&gt;),
+            while MEI often stores the same information as attributes on
+            &lt;note&gt; and &lt;clef&gt;. This makes MEI more compact and suited for
+            metadata-rich, analytical work, whereas MusicXML is designed mainly for
+            interchange between notation programs and playback.
+        </p>
     </div>
+    <verovio-app
+        file="data/week3/chopin-uncompressed.mei"
+        options='{
+            "defaultView": "document",
+            "defaultZoom": 4,
+            "enableResponsive": true,
+            "enableDocument": true
+        }'>
+    </verovio-app>
 </body>
 </html>
+
 
