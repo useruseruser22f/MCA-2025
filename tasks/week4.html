@@ -122,18 +122,61 @@
             pieces in a larger encoded collection.
         </p>
     </section>
+    
+<section class="box">
+    <h2>Task 2 – music21 Piano Roll and Pitch Histogram</h2>
+    <p>
+        For the second task this week, I used <strong>music21</strong> in Google Colab to
+        analyse my MusicXML encoding of Chopin’s <em>Cantabile in B-flat major, B.84</em>.
+        Working in Colab meant I did not need to install anything on my Mac, and I could
+        directly generate graphical analyses of my piece.
+    </p>
 
-    <!-- Placeholder for Task 2 -->
-    <section class="box">
-        <h2>Task 2 – music21 Piano Roll and Pitch Histogram</h2>
-        <p>
-            This section will present my <strong>music21</strong> analyses of the same piece,
-            including a piano roll and pitch histogram, once I have generated them in the
-            Jupyter notebook. I will then compare these visualisations with the jSymbolic
-            features above to see how the different tools highlight similar or different
-            aspects of Chopin’s <em>Cantabile</em>.
-        </p>
-    </section>
+    <h3>Piano Roll</h3>
+    <p>
+        The piano roll below shows each note visually according to when it occurs and how
+        long it lasts. This helps to illustrate the texture and flow of the music over time.
+    </p>
+
+    <p>
+        <img src="../data/week4/Note-quarter-length.png"
+             alt="Piano roll of Chopin Cantabile"
+             style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+    </p>
+
+    <p>
+        The piano roll reveals a clear musical texture:
+        the right hand plays a continuous, flowing melodic line with mostly stepwise motion,
+        while the left hand supports it with longer, harmonically stable notes.
+        This supports the lyrical and “cantabile” character of the piece.
+    </p>
+
+    <h3>Pitch-Class Histogram</h3>
+    <p>
+        The pitch-class histogram shows how frequently each pitch class (0–11) appears
+        throughout the piece. This gives a clear picture of the tonal centre.
+    </p>
+
+    <p>
+        <img src="../data/week4/pitch-class-histogram.png"
+             alt="Pitch-class histogram of Chopin Cantabile"
+             style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+    </p>
+
+    <p>
+        The histogram confirms that <strong>B♭</strong> is the most common pitch class,
+        matching both the key signature and the <em>Most Common Pitch Class</em> from my
+        jSymbolic analysis. Other highly frequent pitch classes correspond to normal scale
+        degrees of B-flat major (such as F and D), reinforcing a strong tonal centre.
+    </p>
+
+    <p>
+        Together, the music21 graphs and the jSymbolic features give a consistent analytical
+        picture of the piece. Both tools highlight its wide range, strong B-flat tonal focus,
+        and lyrical melodic writing with mostly stepwise motion. These combined approaches
+        show how encoded notation can be analysed from multiple perspectives.
+    </p>
+</section>
 
 </main>
 </body>
