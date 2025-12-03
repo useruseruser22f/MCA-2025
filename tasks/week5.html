@@ -8,51 +8,113 @@
 
 <body>
 <main class="content">
+
     <nav class="tabs">
         <a href="../index.html" class="tab">Week 1</a>
         <a href="week2.html" class="tab">Week 2</a>
         <a href="week3.html" class="tab">Week 3</a>
         <a href="week4.html" class="tab">Week 4</a>
         <a href="week5.html" class="tab active">Week 5</a>
-    <a href="week7.html" class="tab">Week 7</a>
-    <a href="week8.html" class="tab">Week 8</a>
-    <a href="week9.html" class="tab">Week 9</a>
-    <a href="week10.html" class="tab">Week 10</a>
-</nav>
-
+        <a href="#" class="tab">Week 6</a>
+        <a href="#" class="tab">Week 7</a>
+        <a href="#" class="tab">Week 8</a>
+        <a href="#" class="tab">Week 9</a>
+        <a href="#" class="tab">Week 10</a>
     </nav>
 
     <section class="box">
-        <h1>Week 5 – Metadata Schema & MEI Enrichment</h1>
+        <h1>Week 5 – Metadata Schema &amp; MEI Enrichment</h1>
         <p>
-            This week I created a metadata schema for my music catalogue and enriched my MEI file
-            for Chopin’s <i>Cantabile in B-flat major, B.84</i> using MEI metadata standards.
+            In this lab I focused on the <strong>metadata</strong> for my dataset theme:
+            Frédéric Chopin’s <em>Cantabile in B-flat major, B.84</em>.
+            The aim was to design a small catalogue schema and then encode that
+            information directly into the <code>&lt;meiHead&gt;</code> of my MEI file,
+            so that future users (or software) can reliably understand what piece the
+            file represents.
         </p>
     </section>
 
     <section class="box">
-        <h2>My Metadata Schema</h2>
-        <p>My metadata schema includes the following fields:</p>
+        <h2>Task 1 – Metadata Schema</h2>
+        <p>
+            For my music catalogue I created a simple metadata schema that could be
+            reused across all pieces in my dataset. It includes the required elements
+            (title, artist/composer, publisher) plus at least two additional fields:
+        </p>
+
         <ul>
-            <li><strong>Title</strong></li>
-            <li><strong>Composer</strong></li>
-            <li><strong>Publisher</strong></li>
-            <li><strong>Date of Composition</strong></li>
-            <li><strong>Genre</strong></li>
+            <li><strong>Title</strong> – the main title of the work, as it appears on the score.</li>
+            <li><strong>Composer</strong> – the creator of the work (here, Frédéric Chopin).</li>
+            <li><strong>Publisher</strong> – the organisation that issued the score used for encoding
+                (in this case the IMSLP digital edition).</li>
+            <li><strong>Date of composition</strong> – the year the piece was written (1834).</li>
+            <li><strong>Genre / work type</strong> – a short term describing the style or category,
+                here recorded as a <em>character piece</em>.</li>
+            <li><strong>Catalogue number</strong> – a scholarly identifier for the work,
+                in this case the Brown catalogue number <strong>B.84</strong>.</li>
         </ul>
+
+        <p>
+            Together these elements give enough information to identify the work,
+            situate it historically, and distinguish it from other Chopin pieces that may
+            share similar titles or keys.
+        </p>
     </section>
 
     <section class="box">
-        <h2>Updated MEI File</h2>
+        <h2>Task 2 – Enriching the MEI Header</h2>
         <p>
-            Below is the link to the enriched MEI file containing my metadata:
+            For this task I opened my Week 3 MEI file in the Verovio Editor and edited
+            the <code>&lt;meiHead&gt;</code> section. I replaced the automatically generated,
+            mostly empty header with one that follows the MEI 5.x guidelines.
+        </p>
+
+        <p>
+            In the <code>&lt;titleStmt&gt;</code> I added:
+        </p>
+        <ul>
+            <li>The full work title:
+                <code>Cantabile in B-flat major, B.84</code>.</li>
+            <li>A <code>&lt;respStmt&gt;</code> identifying the role
+                <strong>Composer</strong> and the encoded name
+                <code>&lt;persName&gt;Frédéric Chopin&lt;/persName&gt;</code>, linked to a VIAF
+                authority record using the <code>@auth.uri</code> attribute.</li>
+        </ul>
+
+        <p>
+            In the <code>&lt;pubStmt&gt;</code> I encoded:
+        </p>
+        <ul>
+            <li><code>&lt;publisher&gt;</code> – “IMSLP – International Music Score Library Project”.</li>
+            <li><code>&lt;pubPlace&gt;</code> – “Paris”.</li>
+            <li><code>&lt;date isodate="1834"&gt;1834&lt;/date&gt;</code> – the year of composition.</li>
+        </ul>
+
+        <p>
+            Finally, in <code>&lt;notesStmt&gt;</code> I summarised the schema in a short
+            annotation, noting the genre (character piece) and catalogue number (B.84).
+            I left the existing <code>&lt;encodingDesc&gt;</code> in place so that it
+            still records that the file was transcoded from MusicXML using Verovio.
+        </p>
+
+        <p>
+            After editing, I checked the file in Verovio until there were no red error
+            markers in the header, which indicates that the metadata is valid according
+            to the MEI schema.
+        </p>
+
+        <p>
+            The enriched MEI file is available here:
         </p>
         <p>
-            <a href="../data/week5/chopin-uncompressed.mei">Download my updated MEI file</a>
+            <a href="../data/week5/chopin-uncompressed(2).mei">
+                Download my updated Cantabile MEI file
+            </a>
         </p>
     </section>
 
 </main>
 </body>
 </html>
+
 
