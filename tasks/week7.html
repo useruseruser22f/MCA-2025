@@ -26,12 +26,11 @@
     <section class="box">
         <h1>Week 7 – Curating and Displaying Metadata</h1>
         <p>
-            In Week 7 I revisited the metadata for my dataset theme
-            (<em>Cantabile in B-flat major, B.84</em> by Frédéric Chopin)
-            and focused on two curatorial tasks:
-            (1) enriching the MEI header with genre and licensing information, and
-            (2) learning how to display that metadata on a web page alongside the
-            engraved score using Verovio and CETEIcean.
+            In this lab I revisited the metadata for my dataset theme,
+            Frédéric Chopin’s <em>Cantabile in B-flat major, B.84</em>, and focused on
+            two things: (1) enriching the MEI header with genre and licensing
+            information, and (2) learning how to display that metadata on a web page
+            alongside the engraved score using Verovio and CETEIcean.
         </p>
     </section>
 
@@ -39,17 +38,17 @@
     <section class="box">
         <h2>Task 1 – Updating the MEI Metadata</h2>
         <p>
-            I started from the MEI file I created in Week 5 and saved a new version
-            for this lab (<code>chopin-cantabile-meta.mei</code> in my
-            <code>data/week7/</code> folder). I then edited the
-            <code>&lt;meiHead&gt;</code> to include two additional types of metadata:
-            a genre classification and an explicit licence.
+            I began with my Week 5 MEI file and exported a new version for this lab,
+            which I saved as <code>chopin-cantabile-meta.mei</code> in my
+            <code>data/week7/</code> folder. In this new file I edited the
+            <code>&lt;meiHead&gt;</code> to add a genre classification and explicit
+            licensing information.
         </p>
 
         <h3>Genre</h3>
         <p>
-            I added a genre description inside the <code>&lt;notesStmt&gt;</code> as
-            an extra annotation:
+            To record the genre, I added an extra annotation inside
+            <code>&lt;notesStmt&gt;</code>:
         </p>
 
 <pre><code>&lt;notesStmt&gt;
@@ -62,96 +61,105 @@
 </code></pre>
 
         <p>
-            I chose the label “character piece” because this work is a short,
-            lyrical piano solo and is often grouped with Chopin’s other smaller
-            character pieces (like nocturnes and preludes). Recording this genre
-            in the header means future users can filter my dataset not only by
-            composer and key, but also by the type of piece.
+            I chose the label “character piece (cantabile piano work)” because the
+            piece is a short, lyrical solo and is often grouped with Chopin’s other
+            intimate character pieces. Recording this in the MEI header means that
+            my catalogue could later be filtered or searched by genre as well as by
+            composer, key or date.
         </p>
 
         <h3>Licensing</h3>
         <p>
-            I also added an <code>&lt;availability&gt;</code> element indicating how
-            the encoding may be reused:
+            I also added licensing information inside <code>&lt;pubStmt&gt;</code>
+            using an <code>&lt;availability&gt;</code> element:
         </p>
 
-<pre><code>&lt;availability&gt;
-  &lt;licence target="https://creativecommons.org/licenses/by-sa/4.0/"&gt;
-    This MEI encoding is released under a Creative Commons
-    Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) licence.
-  &lt;/licence&gt;
-&lt;/availability&gt;
+<pre><code>&lt;pubStmt&gt;
+  &lt;publisher&gt;IMSLP- International Music Score Library Project&lt;/publisher&gt;
+  &lt;pubPlace&gt;Paris&lt;/pubPlace&gt;
+  &lt;date isodate="1834"&gt;1834&lt;/date&gt;
+
+  &lt;availability&gt;
+    Licensed under Creative Commons Attribution-ShareAlike 4.0 International
+    (CC BY-SA 4.0). See: https://creativecommons.org/licenses/by-sa/4.0/
+  &lt;/availability&gt;
+&lt;/pubStmt&gt;
 </code></pre>
 
         <p>
-            I chose a CC BY-SA licence because the source score is in the public
-            domain, but I still want people who reuse my encoding to give credit
-            and to share any derivative encodings under the same open licence.
-            This is a realistic choice for teaching and research datasets, where
-            reuse and adaptation are encouraged but attribution still matters.
+            I chose a Creative Commons Attribution-ShareAlike 4.0 licence because
+            the original score is in the public domain, but I still want to encourage
+            proper attribution of the encoding and allow others to reuse and adapt it
+            as long as they share any derivatives under the same open licence. This is
+            a realistic choice for an educational and research-oriented dataset.
         </p>
 
         <p>
-            After adding these elements I revalidated the MEI in Verovio to ensure
-            there were no schema errors.
+            After these changes I checked the header in the Verovio XML view and
+            adjusted the structure (for example, placing <code>&lt;availability&gt;</code>
+            inside <code>&lt;pubStmt&gt;</code>) until no red validation errors
+            remained.
+        </p>
+
+        <p>
+            My updated MEI file for this lab is:
+        </p>
+        <p>
+            <a href="../data/week7/chopin-meta.mei">
+                Download Week 7 Cantabile MEI file
+            </a>
         </p>
     </section>
-
-    <!-- TASK 2 -->
+    
     <section class="box">
-        <h2>Task 2 – Rendering Metadata and Score in HTML</h2>
+        <h2>Task 2 – Rendering Metadata and Score on the Web</h2>
         <p>
             For the second task I connected this enriched MEI file to the
-            <code>metaRAW.html</code> page in my repository. In that file I replaced
-            the default example path (<code>data/example.mei</code>) with the path to
-            my new MEI file:
+            <code>metaRAW.html</code> page provided in the repository. In that file I
+            replaced the example path with the location of my new MEI file, e.g.:
         </p>
 
-<pre><code>var meiFile = "data/week7/chopin-cantabile-meta.mei";</code></pre>
+<pre><code>var meiFile = "data/week7/chopin-meta.mei";</code></pre>
 
         <p>
             When I opened
-            <code>[myusername].github.io/MCA-2025/metaRAW.html</code>
-            in the browser, the MEI header was displayed as a long block of
-            unformatted text above the Verovio score. This shows that the metadata
-            is present and readable, but not yet very user friendly.
+            <code>useruseruser22f.github.io/MCA-2025/metaRAW.html</code>
+            in the browser, CETEIcean rendered the MEI header as a block of
+            unformatted text above the Verovio score. This confirmed that my metadata
+            was correctly encoded and being read, but it also showed that the default
+            display is not very user friendly.
         </p>
 
-        <h3>How I Would Improve the Formatting</h3>
+        <h3>How I Would Format the Metadata</h3>
         <p>
-            To make the metadata more usable on the web, I would:
+            To make the metadata more readable for visitors to the site, I would:
         </p>
         <ul>
-            <li>Group the header into sections such as “Work information”,
-                “Publication details” and “Licensing”.</li>
-            <li>Display important fields (title, composer, genre, licence) as a
-                small table or definition list instead of raw text.</li>
-            <li>Highlight the licence with a short label
-                (e.g. “CC BY-SA 4.0”) and make the link clickable.</li>
-            <li>Use CSS to adjust spacing, font size and bold labels so that the
-                metadata is easy to skim.</li>
+            <li>Group related fields into sections such as “Work details” (title,
+                composer, genre), “Publication” (publisher, place, date), and
+                “Licensing”.</li>
+            <li>Use headings and a simple table or list to separate labels
+                (e.g. “Composer:”) from their values.</li>
+            <li>Highlight the licence as a short badge (for example “CC BY-SA 4.0”)
+                and make the URL to the Creative Commons page clickable.</li>
+            <li>Apply CSS (for example in <code>CETEIcean.css</code>) to adjust font
+                sizes, margins and spacing so the metadata block feels like a
+                clean information panel rather than a chunk of text.</li>
         </ul>
 
         <p>
-            The optional part of the lab suggests two approaches: using CSS with
-            CETEIcean (e.g. based on <code>metaCSS1.html</code>) or using
-            Javascript (based on <code>metaJS.html</code>). If I extend this work
-            later, I would probably use the CSS option, because it keeps the logic
-            in the MEI file and styles the existing tags rather than manually
-            rebuilding the metadata with Javascript.
-        </p>
-
-        <p>
-            My enriched MEI file used in this lab can be downloaded here:
-        </p>
-        <p>
-            <a href="../data/week7/chopin-cantabile-meta.mei">
-                Download Week 7 Cantabile MEI file
-            </a>
+            The optional part of the lab suggests using either CSS (via templates
+            like <code>metaCSS1.html</code>) or Javascript (via
+            <code>metaJS.html</code>) to format the metadata automatically.
+            If I extend this work later, I will probably choose the CSS-based
+            approach, because it lets me keep the structure in MEI and simply change
+            how those elements are displayed, rather than rebuilding the metadata
+            manually in Javascript.
         </p>
     </section>
 
 </main>
 </body>
 </html>
+
 
