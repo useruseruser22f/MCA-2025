@@ -1,3 +1,7 @@
+## Weekly Tasks
+
+- [Week 1: Dataset Theme](README.md)
+- [Week 2: Notated Music](tasks/week2.html)
 
 # Building a musical dataset
 <!-- Version 1.0 -->
