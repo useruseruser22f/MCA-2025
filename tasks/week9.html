@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Week 9 – Audio Feature Extraction & Histograms</title>
+    <title>Week 9: Audio Feature Extraction & Histograms</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -22,9 +22,9 @@
     </nav>
 
     <section class="box">
-        <h1>Week 9 – Extracting Audio Features & Visualising Histograms</h1>
+        <h1>Week 9: Extracting Audio Features & Visualising Histograms</h1>
         <p>
-            This week I worked with <strong>audio features</strong> for three Chopin recordings
+            This week I worked with audio features for three Chopin recordings
             from my dataset theme. I used SonicVisualizer to extract Spectrogram, MFCC and
             Chromagram features and then used Python to compute and visualise histograms of
             these features for basic quantitative comparison.
@@ -32,7 +32,7 @@
     </section>
 
     <section class="box">
-        <h2>Task 1 – Feature Extraction in SonicVisualizer</h2>
+        <h2>Task 1: Feature Extraction in SonicVisualizer</h2>
         <p>
             I used the same three recordings from my previous labs:
         </p>
@@ -47,9 +47,9 @@
         </p>
         <ol>
             <li>A <strong>Spectrogram</strong> (time–frequency energy).</li>
-            <li><strong>Mel Frequency Cepstral Coefficients (MFCC)</strong> – a compact
+            <li><strong>Mel Frequency Cepstral Coefficients (MFCC)</strong> a compact
                 representation of timbre.</li>
-            <li>A <strong>Chromagram</strong> – pitch class energy over time.</li>
+            <li>A <strong>Chromagram</strong> pitch class energy over time.</li>
         </ol>
 
         <p>
@@ -90,16 +90,12 @@
         <h4>Track 3 – Nocturne, B.49</h4>
         <img src="../images/week9/track3-sonic.png" alt="Track 3 SonicVisualizer panes"
              style="max-width:100%; height:auto;">
-
-        <p>
-            (If these images do not appear yet, they should be saved as PNGs in
-            <code>img/week9/</code> with the filenames above.)
-        </p>
+        
     </section>
     <section class="box">
         <h2>Task 2 – Computing and Visualising Histograms</h2>
         <p>
-            For Task 2 I moved to Python (in a Jupyter notebook) and loaded the CSV feature
+            For Task 2 I moved to Python in a Jupyter notebook and loaded the CSV feature
             files for each track. Using <code>pandas</code> and <code>matplotlib</code>, I
             generated histograms for the spectrogram, MFCC and chroma features.
         </p>
@@ -150,11 +146,11 @@ for track_name, files in tracks.items():
             Below is an example set of MFCC histograms (one per track):
         </p>
 
-        <img src="../img/week9/track1_mfcc_hist.png" alt="Track 1 MFCC histogram"
+        <img src="../images/week9/track1_mfcc_hist.png" alt="Track 1 MFCC histogram"
              style="max-width:100%; height:auto;">
-        <img src="../img/week9/track2_mfcc_hist.png" alt="Track 2 MFCC histogram"
+        <img src="../images/week9/track2_mfcc_hist.png" alt="Track 2 MFCC histogram"
              style="max-width:100%; height:auto;">
-        <img src="../img/week9/track3_mfcc_hist.png" alt="Track 3 MFCC histogram"
+        <img src="../images/week9/track3_mfcc_hist.png" alt="Track 3 MFCC histogram"
              style="max-width:100%; height:auto;">
 
         <h3>Short discussion (MFCC histograms – &lt; 300 words)</h3>
@@ -175,7 +171,7 @@ for track_name, files in tracks.items():
             wider MFCC distributions, while Track 1 has a softer attack and less high-frequency
             energy. The histograms are not “musical” in themselves, but they do show that
             MFCC features can discriminate between interpretations and recording setups,
-            even when the underlying musical material (Chopin piano pieces) is similar.
+            even when the underlying musical material, Chopin piano pieces, is similar.
             This illustrates how MFCCs can be used for tasks such as similarity search,
             clustering, or style classification in larger audio collections.
         </p>
