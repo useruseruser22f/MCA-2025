@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week 10 – Similarity & Transcription</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<main class="content">
+
+    <nav class="tabs">
+        <a href="../index.html" class="tab">Week 1</a>
+        <a href="week2.html" class="tab">Week 2</a>
+        <a href="week3.html" class="tab">Week 3</a>
+        <a href="week4.html" class="tab">Week 4</a>
+        <a href="week5.html" class="tab">Week 5</a>
+        <a href="week7.html" class="tab">Week 7</a>
+        <a href="week8.html" class="tab">Week 8</a>
+        <a href="week9.html" class="tab">Week 9</a>
+        <a href="week10.html" class="tab active">Week 10</a>
+    </nav>
+
+    <section class="box">
+        <h1>Week 10 – Similarity and Automatic Transcription</h1>
+        <p>
+            In this final lab I applied some of the audio features from Weeks 8 and 9 to two
+            practical tasks: (1) computing similarity between recordings using chroma features
+            in Python, and (2) evaluating an automatic transcription from audio back into
+            symbolic notation.
+        </p>
+    </section>
+
+    <section class="box">
+        <h2>Task 1 – Similarity Matrix Using Chroma Features</h2>
+        <p>
+            For the similarity task I reused three recordings from my Chopin theme:
+        </p>
+        <ul>
+            <li><strong>Track 1:</strong> Cantabile in B-flat major, B.84 – Aya Higuchi</li>
+            <li><strong>Track 2:</strong> Walzer a-Moll, B.150 – Constantin Stephan</li>
+            <li><strong>Track 3:</strong> Nocturne, B.49 in C-sharp minor – Aya Higuchi</li>
+        </ul>
+
+        <p>
+            For each track I opened the audio in SonicVisualizer and computed a
+            <strong>chromagram</strong> (pitch-class energy over time). I then exported the
+            chroma features as CSV files and plugged these into the provided Python notebook
+            from the group lab (<code>week10similarity_20191125a.ipynb</code>), replacing the
+            example “country” tracks with my own files. The notebook calculated a similarity
+            matrix based on chroma features and displayed the result as a coloured grid.
+        </p>
+
+        <p>
+            The similarity matrix below shows how close the three recordings are based on
+            their pitch-class content. Diagonal entries are highest (each track compared to
+            itself), and the off-diagonal values show how similar the different pieces are to
+            one another.
+        </p>
+
+        <figure>
+            <img src="../img/week10/similarity-matrix.png"
+                 alt="Chroma-based similarity matrix for three Chopin recordings"
+                 style="max-width:100%; height:auto; border:1px solid #ccc;">
+            <figcaption>
+                Chroma-based similarity matrix generated from the Week 10 Python notebook.
+            </figcaption>
+        </figure>
+
+        <p>
+            Although all three recordings are solo piano works by Chopin, the matrix still
+            reveals differences: for example, the two shorter, more rhythmically regular
+            pieces tend to appear slightly more similar to each other than to the longer,
+            more harmonically varied Nocturne. This suggests that chroma features can
+            discriminate between pieces even within a very narrow stylistic domain.
+        </p>
+    </section>
+
+    <section class="box">
+        <h2>Task 2 – Automatic Transcription and Comparison</h2>
+        <p>
+            For the transcription task I used the piece I worked on in Week 2 (my Chopin
+            notation exercise in MuseScore). First I exported the score as a WAV file and as
+            a page image directly from MuseScore. I then opened the WAV in SonicVisualizer
+            and applied the <strong>Polyphonic Transcription</strong> transform
+            (<em>Transform → By category → Notes → Polyphonic transcription</em>). After
+            checking the detected notes, I exported this transcription layer as a MIDI file
+            and opened it back in MuseScore, then exported the resulting score as another
+            image.
+        </p>
+
+        <div class="two-col">
+            <div>
+                <h3>Original score (Week 2)</h3>
+                <img src="../img/week10/original-score.png"
+                     alt="Original Week 2 score from MuseScore"
+                     style="max-width:100%; height:auto; border:1px solid #ccc;">
+            </div>
+            <div>
+                <h3>Automatic transcription (from audio)</h3>
+                <img src="../img/week10/transcribed-score.png"
+                     alt="Automatically transcribed score loaded from MIDI"
+                     style="max-width:100%; height:auto; border:1px solid #ccc;">
+            </div>
+        </div>
+
+       
+        <p>
+            Comparing the original and the automatically transcribed scores shows that the
+            polyphonic transcription captures some aspects of the music, but it is far from
+            a perfect reconstruction. In my case, the main melodic line and many of the
+            stronger bass notes are detected reasonably well, so the general contour and key
+            of the piece are recognisable. However, there are clear problems with rhythmic
+            values, voice separation and chord spacing. Sustained notes are sometimes broken
+            into repeated shorter notes, and inner voices are either missing or merged into
+            neighbouring parts. Notation details such as articulations, dynamics, slurs and
+            pedal markings are completely absent, since the algorithm only operates on
+            audio features rather than engraving conventions.
+        </p>
+        <p>
+            These differences highlight the limitations of current automatic transcription
+            for complex piano texture. The system can provide a rough “sketch” that might be
+            useful for analysis or as a starting point, but it does not replace a carefully
+            prepared human encoding. Important musical information about phrasing, balance
+            and performance practice is lost in the process, which is important to keep in
+            mind when using such tools for digital musicology or archival work.
+        </p>
+    </section>
+
+</main>
+</body>
+</html>
 
