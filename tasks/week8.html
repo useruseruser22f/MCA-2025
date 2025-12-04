@@ -2,177 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Week 8 – Audio Metadata & Spectrogram Analysis</title>
+    <title>Week 8 – Audio Analysis</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 <main class="content">
 
-    <!-- NAVIGATION -->
-    <nav class="tabs">
-        <a href="../index.html" class="tab">Week 1</a>
-        <a href="week2.html" class="tab">Week 2</a>
-        <a href="week3.html" class="tab">Week 3</a>
-        <a href="week4.html" class="tab">Week 4</a>
-        <a href="week5.html" class="tab">Week 5</a>
-        <a href="week7.html" class="tab">Week 7</a>
-        <a href="week8.html" class="tab active">Week 8</a>
-        <a href="week9.html" class="tab">Week 9</a>
-        <a href="week10.html" class="tab">Week 10</a>
-    </nav>
+<nav class="tabs">
+    <a href="../index.html" class="tab">Week 1</a>
+    <a href="week2.html" class="tab">Week 2</a>
+    <a href="week3.html" class="tab">Week 3</a>
+    <a href="week4.html" class="tab">Week 4</a>
+    <a href="week5.html" class="tab">Week 5</a>
+    <a href="week7.html" class="tab">Week 7</a>
+    <a href="week8.html" class="tab active">Week 8</a>
+    <a href="week9.html" class="tab">Week 9</a>
+    <a href="week10.html" class="tab">Week 10</a>
+</nav>
 
-    <section class="box">
-        <h1>Week 8 – Audio Tracks & Time–Frequency Analysis</h1>
-        <p>
-            This week moves from symbolic notation to <strong>digital audio</strong>.
-            I focused on three recordings related to my theme of Frédéric Chopin and
-            explored both basic technical metadata and simple time–frequency analysis
-            using SonicVisualizer.
-        </p>
-    </section>
+<h1>Week 8 – Audio Metadata & Spectrogram Analysis</h1>
 
-    <!-- TASK 1: METADATA TABLE -->
-    <section class="box">
-        <h2>Task 1 – Audio Tracks and Metadata</h2>
-        <p>
-            I selected three audio tracks related to Chopin. The table below lists
-            important technical and non-technical metadata for each track.
-            (Values in brackets are reminders for me to fill in based on my audio
-            files and SonicVisualizer output.)
-        </p>
+<p>
+This week I analysed three recordings related to my theme (Chopin).  
+I extracted technical and non-technical metadata and generated spectrograms using SonicVisualizer.
+</p>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Track 1</th>
-                    <th>Track 2</th>
-                    <th>Track 3</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Title</td>
-                    <td>[e.g. Cantabile in B-flat major, B.84]</td>
-                    <td>[Title of track 2]</td>
-                    <td>[Title of track 3]</td>
-                </tr>
-                <tr>
-                    <td>Artist / Performer</td>
-                    <td>[Pianist / ensemble]</td>
-                    <td>[Performer]</td>
-                    <td>[Performer]</td>
-                </tr>
-                <tr>
-                    <td>Composer</td>
-                    <td>Frédéric Chopin</td>
-                    <td>Frédéric Chopin</td>
-                    <td>Frédéric Chopin</td>
-                </tr>
-                <tr>
-                    <td>Copyright info</td>
-                    <td>[Label / public domain / CC etc.]</td>
-                    <td>[Copyright or N/A]</td>
-                    <td>[Copyright or N/A]</td>
-                </tr>
-                <tr>
-                    <td>Genre</td>
-                    <td>[e.g. Romantic solo piano]</td>
-                    <td>[Genre]</td>
-                    <td>[Genre]</td>
-                </tr>
-                <tr>
-                    <td>Source</td>
-                    <td>[e.g. Downloaded from &lt;site&gt;]</td>
-                    <td>[Source]</td>
-                    <td>[Source]</td>
-                </tr>
-                <tr>
-                    <td>File format</td>
-                    <td>[e.g. MP3 / WAV / FLAC]</td>
-                    <td>[Format]</td>
-                    <td>[Format]</td>
-                </tr>
-                <tr>
-                    <td>Number of channels</td>
-                    <td>[e.g. 2 (stereo)]</td>
-                    <td>[Channels]</td>
-                    <td>[Channels]</td>
-                </tr>
-                <tr>
-                    <td>Sample rate</td>
-                    <td>[e.g. 44,100 Hz]</td>
-                    <td>[Sample rate]</td>
-                    <td>[Sample rate]</td>
-                </tr>
-                <tr>
-                    <td>Bitrate (bits per second)</td>
-                    <td>[e.g. 192 kbps]</td>
-                    <td>[Bitrate]</td>
-                    <td>[Bitrate]</td>
-                </tr>
-                <tr>
-                    <td>Duration</td>
-                    <td>[e.g. 3:24]</td>
-                    <td>[Duration]</td>
-                    <td>[Duration]</td>
-                </tr>
-            </tbody>
-        </table>
+<h2>Task 1 – Metadata Table</h2>
 
-        <p>
-            The non-technical metadata (title, performer, genre, source and copyright)
-            would be useful in a catalogue interface. The technical metadata
-            (format, channels, sample rate, bitrate and duration) is more important
-            for audio quality, analysis, and storage considerations.
-        </p>
-    </section>
+<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+  <tr>
+    <th>Title</th>
+    <th>Artist</th>
+    <th>Genre</th>
+    <th>Album / Source</th>
+    <th>Duration</th>
+    <th>Format</th>
+    <th>Sample Rate</th>
+    <th>Bitrate</th>
+    <th>Channels</th>
+  </tr>
 
-    <!-- TASK 2: WAVEFORMS + SPECTROGRAMS -->
-    <section class="box">
-        <h2>Task 2 – Waveform vs Time–Frequency (Spectrogram) Analysis</h2>
-        <p>
-            For each of the three tracks, I opened the audio in SonicVisualizer and
-            generated both a waveform view and a log-frequency spectrogram. The images
-            below are exported directly from SonicVisualizer.
-        </p>
+  <tr>
+    <td>Cantabile in B-flat major, B.84</td>
+    <td>Aya Higuchi</td>
+    <td>Classical</td>
+    <td>Musopen – Complete Works of Chopin</td>
+    <td>01:02</td>
+    <td>MP3 (MPEG Layer 3)</td>
+    <td>48,000 Hz</td>
+    <td>128 kbps</td>
+    <td>Stereo</td>
+  </tr>
 
-        <h3>Track 1</h3>
-        <p><strong>[Replace these image files with your exports]</strong></p>
-        <p>Waveform:</p>
-        <img src="../img/week8/track1_waveform.png" alt="Track 1 waveform" style="max-width:100%; height:auto;">
-        <p>Spectrogram (log frequency):</p>
-        <img src="../img/week8/track1_spectrogram.png" alt="Track 1 spectrogram" style="max-width:100%; height:auto;">
+  <tr>
+    <td>Walzer a-Moll, B.150</td>
+    <td>Constantin Stephan</td>
+    <td>Romantic</td>
+    <td>Independent Release (2020)</td>
+    <td>02:54</td>
+    <td>MP3</td>
+    <td>44,100 Hz</td>
+    <td>128 kbps</td>
+    <td>Stereo</td>
+  </tr>
 
-        <h3>Track 2</h3>
-        <p>Waveform:</p>
-        <img src="../img/week8/track2_waveform.png" alt="Track 2 waveform" style="max-width:100%; height:auto;">
-        <p>Spectrogram (log frequency):</p>
-        <img src="../img/week8/track2_spectrogram.png" alt="Track 2 spectrogram" style="max-width:100%; height:auto;">
+  <tr>
+    <td>Nocturne, B.49 in C-sharp minor</td>
+    <td>Aya Higuchi</td>
+    <td>Classical</td>
+    <td>Musopen – Complete Works of Chopin</td>
+    <td>04:08</td>
+    <td>MP3</td>
+    <td>44,100 Hz</td>
+    <td>128 kbps</td>
+    <td>Stereo</td>
+  </tr>
 
-        <h3>Track 3</h3>
-        <p>Waveform:</p>
-        <img src="../img/week8/track3_waveform.png" alt="Track 3 waveform" style="max-width:100%; height:auto;">
-        <p>Spectrogram (log frequency):</p>
-        <img src="../img/week8/track3_spectrogram.png" alt="Track 3 spectrogram" style="max-width:100%; height:auto;">
+</table>
 
-        <h3>Short discussion (time–frequency vs waveform)</h3>
-        <p>
-            A waveform only shows changes in amplitude over time, so it is useful
-            for visualising loudness and overall envelope, but it does not tell us
-            which pitches or harmonics are present. A log-frequency spectrogram adds
-            the frequency axis, which makes it possible to see the distribution of
-            energy across low, mid and high ranges at each moment in time. For
-            example, in my spectrograms it is much easier to distinguish the left-hand
-            bass notes from the right-hand melody, and to see where the pedal creates
-            overlapping harmonics. This kind of time–frequency view is therefore much
-            more informative for analysing texture, register, and changes in timbre
-            than a waveform alone, even though both are derived from the same audio
-            signal.
-        </p>
-    </section>
+<h2>Task 2 – Spectrogram Analysis</h2>
+
+<p>Below are the spectrograms generated from SonicVisualizer (log frequency, adaptive spectrogram):</p>
+
+<h3>Track 1 – Cantabile in B-flat major</h3>
+<img src="../data/week8/track1_spectrogram.png" alt="Spectrogram Track 1" style="width:100%; border:1px solid #ccc;">
+
+<h3>Track 2 – Walzer a-Moll, B.150</h3>
+<img src="../data/week8/track2_spectrogram.png" alt="Spectrogram Track 2" style="width:100%; border:1px solid #ccc;">
+
+<h3>Track 3 – Nocturne, B.49</h3>
+<img src="../data/week8/track3_spectrogram.png" alt="Spectrogram Track 3" style="width:100%; border:1px solid #ccc;">
+
+<h2>Discussion (200 words)</h2>
+<p>
+Time-frequency analysis (spectrograms) provides analytical advantages over waveform-only
+visualisation because it shows how pitch content changes over time. A waveform only displays
+amplitude, meaning it cannot distinguish between different notes, harmonies, or registers.
+For example, in Track 3 (Nocturne), the spectrogram clearly shows the left-hand bass motion
+as darker low-frequency bands around 200–400 Hz, while the right-hand melody appears as
+distinct bright horizontal lines at higher frequencies (1000–2000 Hz). This separation does
+not appear in the raw waveform at all.  
+Similarly, in Track 1 (Cantabile), the pedalled legato phrases create continuous frequency
+smearing visible in the spectrogram but not the waveform. Spectrograms make patterns such
+as vibrato, harmonic overtones, and articulation visible, providing a richer and more detailed
+understanding of musical texture.
+</p>
 
 </main>
 </body>
 </html>
+
